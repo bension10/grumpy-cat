@@ -3,26 +3,24 @@ import { GET_BREEDS, GET_BREEDS_SUCCESS } from '../constants/breeds';
 
 const initialState = {
   isLoading: false,
-  breeds: []
+  data: []
 };
 
 const breeds = handleActions(
   {
-    [GET_BREEDS]: (state, action) => {
-      console.log('GET_BREEDS', action);
-      return {
+    [GET_BREEDS]: (state, action) => (
+      {
         ...state,
         isLoading: true
       }
-    },
-    [GET_BREEDS_SUCCESS]: (state, action) => {
-      console.log('GET_BREEDS_SUCCESS', action);
-      return {
+    ),
+    [GET_BREEDS_SUCCESS]: (state, action) => (
+      {
         ...state,
         isLoading: false,
-        breeds: action.payload
+        data: action.payload
       }
-    }
+    )
   },
   initialState
 );

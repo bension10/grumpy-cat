@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import CatsBreedDropDown from './CatsBreedDropDown';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import { getBreeds } from '../../actions/breeds'
 
 const CatsBreedListLayout = ({ getBreeds, breeds }) => {
+
   useEffect(() => {
     getBreeds();
   },[getBreeds]);
@@ -16,14 +16,16 @@ const CatsBreedListLayout = ({ getBreeds, breeds }) => {
     <Container>
       <h1>Cat Browser</h1>
       <Row>
-        <Col md={3}>Breed</Col>
+        <Col md={3}>
+          <CatsBreedDropDown breeds={breeds} />
+        </Col>
       </Row>
     </Container>
   );
 }
 
 const mapStateToProps = state => (
-  { ...state }
+  { breeds: state.breeds.data }
 );
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
