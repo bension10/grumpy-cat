@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Component as CatsBreedListLayout } from '../src/components/CatsBreedListLayout'
 
 function App() {
@@ -11,4 +12,7 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => (
+  { ...state }
+);
+export default connect(mapStateToProps)(App);
