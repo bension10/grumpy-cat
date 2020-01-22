@@ -11,3 +11,7 @@ export const loadBreeds = (payload) => {
   console.log('loadBreeds');
   return { type: GET_BREEDS_SUCCESS, payload };
 };
+
+export const getBreedImages = () => {};
+
+export const loadBreedImages = () => {};
