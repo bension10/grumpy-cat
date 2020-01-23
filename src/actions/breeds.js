@@ -1,6 +1,7 @@
 import {
   GET_BREEDS,
   GET_BREED_IMAGES,
+  GET_BREED_DETAILS,
 } from '../constants/breeds';
 
 export const getBreeds = () => {
@@ -10,6 +11,13 @@ export const getBreeds = () => {
 export const getBreedImages = params => {
   return {
     type: GET_BREED_IMAGES,
+    params
+  }
+};
+
+export const getBreedDetails = params => {
+  return {
+    type: GET_BREED_DETAILS,
     params
   }
 };
