@@ -1,9 +1,10 @@
 import { all } from 'redux-saga/effects';
 
-import breedSaga from './breedSagas';
+import breedSaga, { watchBreedImagesSaga } from './breedSagas';
 
 export default function* rootSagas() {
   yield all([
     breedSaga(),
+    watchBreedImagesSaga()
   ]);
 }

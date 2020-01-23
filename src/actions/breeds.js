@@ -1,17 +1,15 @@
 import {
   GET_BREEDS,
-  GET_BREEDS_SUCCESS
+  GET_BREED_IMAGES,
 } from '../constants/breeds';
 
 export const getBreeds = () => {
   return { type: GET_BREEDS };
 };
 
-export const loadBreeds = (payload) => {
-  console.log('loadBreeds');
-  return { type: GET_BREEDS_SUCCESS, payload };
+export const getBreedImages = params => {
+  return {
+    type: GET_BREED_IMAGES,
+    params
+  }
 };
-
-export const getBreedImages = () => {};
-
-export const loadBreedImages = () => {};
