@@ -14,7 +14,6 @@ const CatsBreedListLayout = ({
   breeds,
   breedsImagesById
 }) => {
-  console.log('breedsImagesById ', breedsImagesById);
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const breedId = query.get('breed');

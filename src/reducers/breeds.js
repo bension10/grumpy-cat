@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import uniqBy from 'lodash/uniqBy';
 import {
   GET_BREEDS,
   GET_BREEDS_SUCCESS,
@@ -50,12 +51,19 @@ export const breedsImagesById = handleActions(
     },
     [GET_BREED_IMAGES_SUCCESS]: (state, action) => {
       const { id, payload } = action;
+      let dataSet;
+      if(state.data[id]) {
+        dataSet = state.data[id].concat(payload)
+      } else {
+        dataSet = payload;
+      }
+
       return {
         ...state,
         isLoading: false,
         data: {
           ...state.data,
-          [id]: payload
+          [id]: uniqBy(dataSet, 'id')
         }
       }
     }
