@@ -1,8 +1,8 @@
 const cats_api_url = 'https://api.thecatapi.com/v1/';
 
 const CATS_API = {
-  async getData(endpoint) {
-    const response = await fetch(cats_api_url + endpoint);
+  getData: async (url) => {
+    const response = await fetch(cats_api_url + url);
     const data = await response.json();
     return data;
   }
