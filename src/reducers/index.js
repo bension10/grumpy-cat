@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import breeds from './breeds';
+import breeds, { breedsImagesById } from './breeds';
 
 export default combineReducers({
-  breeds
+  breeds,
+  breedsImagesById
 });
