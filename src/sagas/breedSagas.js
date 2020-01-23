@@ -4,7 +4,9 @@ import {
   GET_BREEDS,
   GET_BREEDS_SUCCESS,
   GET_BREED_IMAGES,
-  GET_BREED_IMAGES_SUCCESS
+  GET_BREED_IMAGES_SUCCESS,
+  GET_BREED_DETAILS,
+  GET_BREED_DETAILS_SUCCESS
 } from '../constants/breeds';
 
 function* getBreeds() {
@@ -41,4 +43,21 @@ function* getBreedImages(action) {
 
 export function* watchBreedImagesSaga() {
   yield takeLatest(GET_BREED_IMAGES, getBreedImages);
+}
+
+function* getBreedDetails(action) {
+  const imageId = action.params;
+  try {
+    const response = yield call(CATS_API.getData, `images/${imageId}`);
+    yield put({
+      type: GET_BREED_DETAILS_SUCCESS,
+      payload: response
+    });
+  } catch (e) {
+    console.log(e)
+  }
+};
+
+export function* watchBreedDetailsSaga() {
+  yield takeLatest(GET_BREED_DETAILS, getBreedDetails);
 }

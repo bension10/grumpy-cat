@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -7,7 +8,7 @@ import {
   Button
 } from 'react-bootstrap';
 
-const CatsBreedImages = ({ breedsImagesById }) => {
+const CatsBreedImages = ({ breedsImagesById, breedId }) => {
 
   if(!breedsImagesById) {
     return(<div>No Images...</div>) 
@@ -20,7 +21,9 @@ const CatsBreedImages = ({ breedsImagesById }) => {
           <Col md={3} key={image.id}>
             <Card>
               <Image src={image.url} thumbnail/>
-              <Button variant="primary">View Details</Button>
+                <Link to={`/${image.id}`}>
+                  <Button>View Details</Button>
+                </Link>
             </Card>
           </Col>
           )
