@@ -2,6 +2,7 @@ import {
   GET_BREEDS,
   GET_BREED_IMAGES,
   GET_BREED_DETAILS,
+  CLEAR_BREED_IMAGES
 } from '../constants/breeds';
 
 export const getBreeds = () => {
@@ -21,3 +22,9 @@ export const getBreedDetails = params => {
     params
   }
 };
+
+export const clearBreedImages = () => {
+  return {
+    type: CLEAR_BREED_IMAGES
+  }
+}

@@ -8,22 +8,29 @@ import {
   Button
 } from 'react-bootstrap';
 
-const CatsBreedImages = ({ breedsImagesById, breedId }) => {
-
-  if(!breedsImagesById) {
-    return(<div>No Images...</div>) 
+const CatsBreedImages = ({ selectedBreedImages }) => {
+  if(!selectedBreedImages.length) {
+    return(
+      <Row>
+        <Col>
+          <p>No cats available</p>
+        </Col>
+      </Row>
+    ); 
   }
 
   return(
     <Row>
-      {breedsImagesById.map(image => {
+      {selectedBreedImages.map(image => {
         return(
-          <Col md={3} key={image.id}>
+          <Col md={3} sm={6} key={image.id} >
             <Card>
-              <Image src={image.url} thumbnail/>
-                <Link to={`/${image.id}`}>
-                  <Button>View Details</Button>
-                </Link>
+              <Image src={image.url}/>
+                <Card.Body>
+                  <Link to={`/${image.id}`}>
+                    <Button>View Details</Button>
+                  </Link>
+                </Card.Body>
             </Card>
           </Col>
           )
