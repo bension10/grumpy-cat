@@ -25,9 +25,8 @@ const CatDetailsLayout = ({
     return <Container>Loading...</Container>
   }
 
-
   return ( 
-    <Container>
+    <Container className="CardDetail">
       { breedDetails.breeds && breedDetails.breeds[0] && 
         <Card>
           <Card.Header>

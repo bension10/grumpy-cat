@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
@@ -7,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { Component as CatsBreedListLayout } from '../src/components/CatsBreedListLayout'
 import { Component as CatDetailsLayout } from './components/CatDetailsLayout';
+import './App.scss'; 
 
 function App() {
   return (
@@ -21,7 +21,4 @@ function App() {
   );
 }
 
-const mapStateToProps = (state) => (
-  { ...state }
-);
-export default connect(mapStateToProps)(App);
+export default (App);

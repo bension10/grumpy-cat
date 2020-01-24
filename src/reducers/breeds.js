@@ -6,7 +6,8 @@ import {
   GET_BREED_IMAGES,
   GET_BREED_IMAGES_SUCCESS,
   GET_BREED_DETAILS,
-  GET_BREED_DETAILS_SUCCESS
+  GET_BREED_DETAILS_SUCCESS,
+  CLEAR_BREED_IMAGES
 } from '../constants/breeds';
 
 const initialState = {
@@ -15,7 +16,7 @@ const initialState = {
 };
 const initialBreedImagesById = {
   isLoading: false,
-  data: {}
+  data: []
 }
 const initialBreedDetails = {
   isLoading: false,
@@ -24,12 +25,12 @@ const initialBreedDetails = {
 
 export const breeds = handleActions(
   {
-    [GET_BREEDS]: (state, action) => (
-      {
+    [GET_BREEDS]: (state, action) => {
+      return {
         ...state,
         isLoading: true
       }
-    ),
+    },
     [GET_BREEDS_SUCCESS]: (state, action) => (
       {
         ...state,
@@ -41,33 +42,33 @@ export const breeds = handleActions(
   initialState
 );
 
-export const breedsImagesById = handleActions(
+export const selectedBreedImages = handleActions(
   {
-    [GET_BREED_IMAGES]: (state, action) => {
+    [GET_BREED_IMAGES]: state => {
       return {
         ...state,
         isLoading: true
       }
     },
     [GET_BREED_IMAGES_SUCCESS]: (state, action) => {
-      const { id, payload } = action;
+      const { payload } = action;
       let dataSet;
-      if(state.data[id]) {
-        dataSet = state.data[id].concat(payload)
+      if(state.data) {
+        dataSet = uniqBy(state.data.concat(payload), 'id');
       } else {
         dataSet = payload;
-      }
-
+      } 
+      
       return {
         ...state,
         isLoading: false,
-        data: {
-          ...state.data,
-          [id]: uniqBy(dataSet, 'id')
-        }
+        data: [...dataSet]
       }
-    }
-  },
+    }, 
+    [CLEAR_BREED_IMAGES]: (state, action) => {
+      return initialBreedImagesById;
+    },
+  }, 
   initialBreedImagesById
 );
 

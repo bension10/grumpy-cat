@@ -1,45 +1,81 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useLocation } from 'react-router-dom';
 import CatsBreedDropDown from './CatsBreedDropDown';
 import CatsBreedImages from './CatsBreedImages';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Button
+} from 'react-bootstrap';
 
-import { getBreeds, getBreedImages } from '../../actions/breeds'
+import { getBreeds, getBreedImages, clearBreedImages } from '../../actions/breeds'
+
+// compare previous selectedBreedImages count
+const usePrevious = (value) => {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value;
+  })
+
+  return ref.current;
+}
 
 const CatsBreedListLayout = ({
   getBreeds,
   getBreedImages,
   breeds,
-  breedsImagesById
+  selectedBreedImages,
+  isLoading,
+  clearBreedImages
 }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const breedId = query.get('breed');
   const [id, setBreed] = useState(breedId);
   const [page, setPage] = useState(1);
-
+  const breedImagesCountRef = usePrevious(selectedBreedImages.length);
+  const breedIdRef = usePrevious(breedId);
+  
+  // run only once when component mounts e.g page reload
   useEffect(() => {
-    getBreeds();
-  },[getBreeds]);
-
-  useEffect(() => {
-    if(id) {
-      getBreedImages({ id, page });
+    if(breedIdRef) {
+      getBreedImages({ id: breedId, page: 1 });
     }
-  },[getBreedImages, id, page]);
+  }, [breedIdRef]);
+
+  // keep a copy of current state
+  // instead of fetching the API again.
+  useEffect(() => {
+    if(!breeds.length) {
+      getBreeds();
+    }
+  },[getBreeds, breeds]);
 
   const handleOptionChange = useCallback(event => {
     const id = event.target.value;
+    // clear data to make way for new payload
+    clearBreedImages();
+    if(!!id) {
+      getBreedImages({ id, page: 1});
+    }
     setBreed(id);
     setPage(1);
-  }, []);
+  }, [getBreedImages, clearBreedImages]);
 
-  const loadMore = useCallback(() => {
-    setPage(prevPage => prevPage + 1);
-  }, []);
-  
+  const handleLoadMore = useCallback(() => {
+    setPage(prevPage => {
+      getBreedImages({ id, page: prevPage + 1 })
+      return prevPage + 1;
+    });
+  }, [getBreedImages, id]);
+
+  const showLoadMoreButton = 
+    breedImagesCountRef !== selectedBreedImages.length 
+    || page === 1; 
+
   return (
     <div className="Home">
       <Container>
@@ -47,34 +83,46 @@ const CatsBreedListLayout = ({
       <CatsBreedDropDown
         breeds={breeds}
         onHandleChange={handleOptionChange}
+        breedId={id || ''}
       />
       <CatsBreedImages
-        breedsImagesById={breedsImagesById[id]}
+        selectedBreedImages={selectedBreedImages}
         breedId={id}
       />
       <Row>
-        <Col md={3}>
-          <Button variant="success" onClick={loadMore}>
-            Primary
-          </Button>
-        </Col>
+        {
+          showLoadMoreButton &&
+            <Col md={3}>
+              <Button
+                variant="success"
+                onClick={handleLoadMore}
+                disabled={!id}
+              >
+                {
+                  isLoading ? 'Loading cats...' : 'Load More'
+                }
+              </Button>
+          </Col>  
+        }
       </Row>
     </Container>
     </div>
   );
-}
+};
 
 const mapStateToProps = state => {
   return {
     breeds: state.breeds.data,
-    breedsImagesById: state.breedsImagesById.data
+    isLoading: state.selectedBreedImages.isLoading,
+    selectedBreedImages: state.selectedBreedImages.data
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     getBreeds,
-    getBreedImages
+    getBreedImages,
+    clearBreedImages
   }, dispatch);
 }
 
